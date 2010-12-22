@@ -1,8 +1,8 @@
 <?php
 
-require_once('AlfrescoBase.php');
+require_once('Base.php');
 
-class AlfrescoGroups extends AlfrescoBase
+class Alfresco_Rest_Groups extends Alfresco_Rest_Base
 {
 	private $_groupsBaseUrl = 'groups';
 	

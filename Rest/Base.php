@@ -1,8 +1,8 @@
 <?php
-require_once('Exception/AlfrescoApiException.php');
+require_once('Exception.php');
 require_once('CurlClient/CurlClient.php');
 
-class AlfrescoBase
+class Alfresco_Rest_Base
 {
     const DEFAULT_ADAPTER = 'json';
     

@@ -1,8 +1,8 @@
 <?php
 
-require_once('AlfrescoBase.php');
+require_once('Base.php');
 
-class AlfrescoLogin extends AlfrescoBase
+class Alfresco_Rest_Login extends Alfresco_Rest_Base
 {
 	private $_loginBaseUrl = 'login';
 	private $_loginTicketUrl = 'ticket';
