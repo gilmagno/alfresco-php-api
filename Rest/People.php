@@ -1,8 +1,8 @@
 <?php
 
-require_once('Base.php');
+require_once('Abstract.php');
 
-class Alfresco_Rest_People extends Alfresco_Rest_Base
+class Alfresco_Rest_People extends Alfresco_Rest_Abstract
 {
 	private $_peopleBaseUrl = 'people';
 	private $_peoplePreferencesUrl = 'preferences';
