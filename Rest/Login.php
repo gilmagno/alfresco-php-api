@@ -11,14 +11,34 @@ class Alfresco_Rest_Login extends Alfresco_Rest_Abstract
 	   $this->setBaseUrl($url);
 	}
 	
-	/*
-	 * Login
-	 * GET /alfresco/service/api/login?u={username}&pw={password?}
-	 * 
-	 * returns
-	 * Assoc array $array['ticket' => ticket]
-	 */
-	public function login($username, $password)
+    public function login($username, $password)
+    {
+        $url = $this->getBaseUrl() . "/api/" . $this->_loginBaseUrl;
+        
+        $postData['username'] = $username;
+        $postData['password'] = $password;
+        
+        $curlObj = new CurlClient();
+        
+        $result = $curlObj->doPostRequest($url, $postData);
+        
+        if ($this->isAlfrescoError($result)) {
+            throw new Exception($this->getAlfrescoErrorMessage($result));
+        }
+        
+        $this->setTicket($result['data']['ticket']);
+        $ticket = $result['data']['ticket'];
+        return array('ticket' => $ticket);
+    }
+
+    /*
+     * Login
+     * GET /alfresco/service/api/login?u={username}&pw={password?}
+     * 
+     * returns
+     * Assoc array $array['ticket' => ticket]
+     */
+	/*public function login2($username, $password)
 	{
 		$url =
 		    $this->getBaseUrl() . "/api/" .
@@ -39,7 +59,7 @@ class Alfresco_Rest_Login extends Alfresco_Rest_Abstract
 		$ticket = $result['data']['ticket'];
 		
 		return array('ticket' => $ticket);
-	}
+	}*/
 	
     /*
      * Logout
