@@ -7,9 +7,9 @@ require_once('PostAdapters/JsonPostAdapter.php');
 
 class CurlClient
 {
-	const FORMAT_FORMDATA = 'formdata';
-	const FORMAT_JSON = 'json';
-	const DEFAULT_INPUT_FORMAT = self::FORMAT_JSON;
+    const FORMAT_FORMDATA = 'formdata';
+    const FORMAT_JSON = 'json';
+    const DEFAULT_INPUT_FORMAT = self::FORMAT_JSON;
     const DEFAULT_RETURN_FORMAT = self::FORMAT_JSON;
     
     private function _doRequest($url, $options = array()) {
@@ -40,9 +40,9 @@ class CurlClient
         
         // Encoding
         if ($postDataFormat != self::FORMAT_FORMDATA) {
-	        $postAdapterObj = $this->getPostAdapter($postDataFormat);
-	        $postData = $postAdapterObj->encode($postData);
-	        $options = $postAdapterObj->updateOptions($options);
+            $postAdapterObj = $this->getPostAdapter($postDataFormat);
+            $postData = $postAdapterObj->encode($postData);
+            $options = $postAdapterObj->updateOptions($options);
         }
         
         $options[CURLOPT_POSTFIELDS] = $postData;
@@ -51,8 +51,8 @@ class CurlClient
         
         // Decoding
         if ($returnFormat != self::FORMAT_FORMDATA) {
-	        $getAdapterObj = $this->getGetAdapter($returnFormat);
-	        $return = $getAdapterObj->decode($result, true);
+            $getAdapterObj = $this->getGetAdapter($returnFormat);
+            $return = $getAdapterObj->decode($result, true);
         }
         
         return $return;

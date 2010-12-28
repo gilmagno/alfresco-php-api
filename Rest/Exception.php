@@ -6,11 +6,11 @@
  */
 class Alfresco_Rest_Exception extends Exception
 {
-	const ERROR_CODE = 'AlfrescoApi';
-	protected $code;
-	protected $description;
+    const ERROR_CODE = 'AlfrescoApi';
+    protected $code;
+    protected $description;
     
-	/**
+    /**
      * Construct the exception
      *
      * @param  string $msg
@@ -19,18 +19,18 @@ class Alfresco_Rest_Exception extends Exception
      */
     public function __construct($msg = '', $description = null)
     {
-    	$this->code = self::ERROR_CODE;
-    	parent::__construct($msg);
-    	$this->description = $description;
+        $this->code = self::ERROR_CODE;
+        parent::__construct($msg);
+        $this->description = $description;
     }
     
     public function hasDescription()
     {
-    	return $this->description;
+        return $this->description;
     }
     
     public function getDescription()
     {
-    	return $this->description;
+        return $this->description;
     }
 }

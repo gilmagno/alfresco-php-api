@@ -4,13 +4,13 @@ require_once('Abstract.php');
 
 class Alfresco_Rest_Login extends Alfresco_Rest_Abstract
 {
-	private $_loginBaseUrl = 'login';
-	private $_loginTicketUrl = 'ticket';
-	
-	public function __construct($url) {
-	   $this->setBaseUrl($url);
-	}
-	
+    private $_loginBaseUrl = 'login';
+    private $_loginTicketUrl = 'ticket';
+    
+    public function __construct($url) {
+       $this->setBaseUrl($url);
+    }
+    
     public function login($username, $password)
     {
         $url = $this->getBaseUrl() . "/api/" . $this->_loginBaseUrl;
@@ -38,37 +38,37 @@ class Alfresco_Rest_Login extends Alfresco_Rest_Abstract
      * returns
      * Assoc array $array['ticket' => ticket]
      */
-	/*public function login2($username, $password)
-	{
-		$url =
-		    $this->getBaseUrl() . "/api/" .
-		    $this->_loginBaseUrl .
+    /*public function login2($username, $password)
+    {
+        $url =
+            $this->getBaseUrl() . "/api/" .
+            $this->_loginBaseUrl .
             "?u=" . $username . "&pw=" . $password . '&format=json';
         
-		$curlObj = new CurlClient();
-		
-		$resultJson = trim($curlObj->doGetRequest($url));
-		$result = json_decode($resultJson, true);
-		
-		if ($this->isAlfrescoError($result)) {
-			throw new Exception($this->getAlfrescoErrorMessage($result));
-		}
-		
-		$this->setTicket($result['data']['ticket']);
-		
-		$ticket = $result['data']['ticket'];
-		
-		return array('ticket' => $ticket);
-	}*/
-	
+        $curlObj = new CurlClient();
+        
+        $resultJson = trim($curlObj->doGetRequest($url));
+        $result = json_decode($resultJson, true);
+        
+        if ($this->isAlfrescoError($result)) {
+            throw new Exception($this->getAlfrescoErrorMessage($result));
+        }
+        
+        $this->setTicket($result['data']['ticket']);
+        
+        $ticket = $result['data']['ticket'];
+        
+        return array('ticket' => $ticket);
+    }*/
+    
     /*
      * Logout
      * DELETE /alfresco/service/api/login/ticket/{ticket}
      */
-	public function logout($ticket) {
-	    $url =
-	        $this->getBaseUrl() . "/api/" .
-	        $this->_loginBaseUrl . "/" .
+    public function logout($ticket) {
+        $url =
+            $this->getBaseUrl() . "/api/" .
+            $this->_loginBaseUrl . "/" .
             $this->_loginTicketUrl . "/" .
             $ticket;
         
@@ -78,24 +78,24 @@ class Alfresco_Rest_Login extends Alfresco_Rest_Abstract
         $result = $curlObj->doDeleteRequest($url);
         return $result;
         // TODO configurar retorno
-	}
-	
-	/*
+    }
+    
+    /*
      * Validates the specified ticket is still valid. 
      * The ticket may be invalid, or expired, or the user may have been locked out. 
      * For security reasons this script will not validate the ticket of another user.
-	 * GET /alfresco/service/api/login/ticket/<ticket>?alf_ticket=<ticket>
-	 * 
-	 * returns
+     * GET /alfresco/service/api/login/ticket/<ticket>?alf_ticket=<ticket>
+     * 
+     * returns
      * If the ticket is valid retuns, STATUS_SUCCESS (200)
      * If the ticket is not valid return, STATUS_NOT_FOUND (404)
      * If the ticket does not belong to the current user, STATUS_NOT_FOUND (404)
      * 
      * FIXME alfresco login validate
      */
-	public function validate() {
-	    $url =
-	        $this->getBaseUrl() . "/api/" .
+    public function validate() {
+        $url =
+            $this->getBaseUrl() . "/api/" .
             $this->_loginBaseUrl. "/" .
             $this->_loginTicketUrl . "/" .
             $this->getTicket();

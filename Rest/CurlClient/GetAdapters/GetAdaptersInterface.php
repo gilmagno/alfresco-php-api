@@ -2,5 +2,5 @@
 
 interface getAdapter
 {
-	public function decode($data, $assoc);
+    public function decode($data, $assoc);
 }
