@@ -63,6 +63,6 @@ class Alfresco_Rest_People extends Alfresco_Rest_Abstract
         $curlObj = new CurlClient();
         $resultJson = $curlObj->doGetRequest($url);
         $result = json_decode($resultJson, true);
-        return $result['groups'];
+        return (isset($result['groups'])) ? $result['groups'] : array();
     }
 }
