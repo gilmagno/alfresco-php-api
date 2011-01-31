@@ -1,8 +1,8 @@
 <?php
 
-require_once('GetAdaptersInterface.php');
+//require_once('GetAdaptersInterface.php');
 
-class JsonGetAdapter implements getAdapter
+class CurlClient_GetAdapters_JsonGetAdapter implements CurlClient_GetAdapters_Interface
 {
     public function decode($data, $assoc = false) {
         // FIXME fazer ou procurar função que valide json

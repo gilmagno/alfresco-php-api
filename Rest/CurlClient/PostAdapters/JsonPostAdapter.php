@@ -1,8 +1,8 @@
 <?php
 
-require_once("PostAdapterInterface.php");
+//require_once("PostAdapterInterface.php");
 
-class JsonPostAdapter extends JsonGetAdapter implements postAdapter
+class CurlClient_PostAdapters_JsonPostAdapter extends CurlClient_GetAdapters_JsonGetAdapter implements CurlClient_PostAdapters_Interface
 {
     public function encode($data) {
         $json = json_encode($data);

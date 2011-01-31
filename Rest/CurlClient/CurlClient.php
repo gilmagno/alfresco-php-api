@@ -72,9 +72,7 @@ class CurlClient
 
     public function getGetAdapter($adapterFormat = self::DEFAULT_INPUT_FORMAT) {
         $adapterFormat = ucfirst(strtolower($adapterFormat));
-        $classname = $adapterFormat . "GetAdapter";
-        
-        require_once('GetAdapters/' . $classname . '.php');
+        $classname = "CurlClient_GetAdapters_" . $adapterFormat . "GetAdapter";
         
         $adapterObject = new $classname();
         
@@ -83,9 +81,7 @@ class CurlClient
     
     public function getPostAdapter($adapterFormat = self::DEFAULT_RETURN_FORMAT) {
         $adapterFormat = ucfirst(strtolower($adapterFormat));
-        $classname = $adapterFormat . "PostAdapter";
-        
-        require_once('PostAdapters/' . $classname . '.php');
+        $classname = "CurlClient_PostAdapters_" . $adapterFormat . "PostAdapter";
         
         $adapterObject = new $classname();
         
