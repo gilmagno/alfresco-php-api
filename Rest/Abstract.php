@@ -59,9 +59,10 @@ abstract class Alfresco_Rest_Abstract
     }
     
     public function isAlfrescoError($return) {
-        if (!empty($return['exception'])) {
+        if (is_array($return) && isset($return['exception'])) {
             return true;
         }
+        return false;
     }
     
     public function getAlfrescoErrorMessage($return) {
