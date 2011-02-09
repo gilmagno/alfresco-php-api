@@ -17,7 +17,7 @@ class CurlClient
         
         $options[CURLOPT_URL] = $url;
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_TRANSFERTEXT, true);
+        //curl_setopt($ch, CURLOPT_TRANSFERTEXT, true);
 
         curl_setopt_array($ch, $options);
         
