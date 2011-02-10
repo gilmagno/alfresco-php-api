@@ -29,40 +29,11 @@ class Alfresco_Rest_Login extends Alfresco_Rest_Abstract
     }
 
     /*
-     * Login
-     * GET /alfresco/service/api/login?u={username}&pw={password?}
-     * 
-     * returns
-     * Assoc array $array['ticket' => ticket]
-     */
-    /*public function login2($username, $password)
-    {
-        $url =
-            $this->getBaseUrl() . "/api/" .
-            $this->_loginBaseUrl .
-            "?u=" . $username . "&pw=" . $password . '&format=json';
-        
-        $curlObj = new CurlClient();
-        
-        $resultJson = trim($curlObj->doGetRequest($url));
-        $result = json_decode($resultJson, true);
-        
-        if ($this->isAlfrescoError($result)) {
-            throw new Exception($this->getAlfrescoErrorMessage($result));
-        }
-        
-        $this->setTicket($result['data']['ticket']);
-        
-        $ticket = $result['data']['ticket'];
-        
-        return array('ticket' => $ticket);
-    }*/
-    
-    /*
      * Logout
      * DELETE /alfresco/service/api/login/ticket/{ticket}
      */
-    public function logout($ticket) {
+    public function logout($ticket)
+    {
         $url =
             $this->getBaseUrl() . "/api/" .
             $this->_loginBaseUrl . "/" .
@@ -73,6 +44,7 @@ class Alfresco_Rest_Login extends Alfresco_Rest_Abstract
         
         $curlObj = new CurlClient();
         $result = $curlObj->doDeleteRequest($url);
+        
         return $result;
         // TODO configurar retorno
     }
@@ -90,7 +62,8 @@ class Alfresco_Rest_Login extends Alfresco_Rest_Abstract
      * 
      * FIXME alfresco login validate
      */
-    public function validate() {
+    public function validate()
+    {
         $url =
             $this->getBaseUrl() . "/api/" .
             $this->_loginBaseUrl. "/" .
@@ -100,7 +73,7 @@ class Alfresco_Rest_Login extends Alfresco_Rest_Abstract
         $url = $this->addAlfTicketUrl($url);
         $curlObj = new CurlClient();
         
-        $result = trim($curlObj->doGetRequest($url));
+        $result = trim($curlObj->doGetRequest($url, CurlClient::FORMAT_STRING));
         
         return (strpos($result, 'TICKET_') > -1);
     }

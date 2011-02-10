@@ -9,33 +9,39 @@ abstract class Alfresco_Rest_Abstract
     private $_baseUrl;
     private $_ticket;
     
-    public function __construct($url, $ticket = null) {
+    public function __construct($url, $ticket = null)
+    {
         $this->setBaseUrl($url);
         if (isset($ticket)) {
             $this->setTicket($ticket);
         }
     }
     
-    public function getBaseUrl() {
+    public function getBaseUrl()
+    {
         return $this->_alfrescoBaseUrl;
     }
     
-    public function setBaseUrl($alfrescoBaseUrl) {
+    public function setBaseUrl($alfrescoBaseUrl)
+    {
         $this->_alfrescoBaseUrl = $alfrescoBaseUrl;
     }
     
-    public function getTicket() {
+    public function getTicket()
+    {
         return $this->_ticket;
     }
     
-    public function setTicket($ticket) {
+    public function setTicket($ticket)
+    {
         $this->_ticket = $ticket;
     }
     
     /*
      * Put an "alf_ticket=<ticket>" on the given URL
      */
-    public function addAlfTicketUrl($url) {
+    public function addAlfTicketUrl($url)
+    {
         $ticket = $this->getTicket();
         if (isset($ticket)) {
             if (strstr($url, '?')) {
@@ -50,7 +56,8 @@ abstract class Alfresco_Rest_Abstract
     /*
      * Desuso por causa do Adapter
      */
-    public function postToJson($postArgs) {
+    public function postToJson($postArgs)
+    {
         $json  = "{";
         $json .= "\"name\" : \"" . $postArgs['name'] . "\",";
         $json .= "}";
@@ -58,14 +65,16 @@ abstract class Alfresco_Rest_Abstract
         return $json;
     }
     
-    public function isAlfrescoError($return) {
+    public function isAlfrescoError($return)
+    {
         if (is_array($return) && isset($return['exception'])) {
             return true;
         }
         return false;
     }
     
-    public function getAlfrescoErrorMessage($return) {
+    public function getAlfrescoErrorMessage($return)
+    {
         if ($this->isAlfrescoError($return)) {
             return $return['message'];
         }
@@ -74,8 +83,7 @@ abstract class Alfresco_Rest_Abstract
     protected function _getResultFromUrl($url)
     {
         $curlObj = new CurlClient();
-        $resultJson = $curlObj->doGetRequest($url);
-        $result = json_decode($resultJson, true);
+        $result = $curlObj->doGetRequest($url);
         
         if ($this->isAlfrescoError($result)) {
             throw new Exception($this->getAlfrescoErrorMessage($result));

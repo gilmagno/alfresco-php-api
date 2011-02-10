@@ -8,7 +8,8 @@ class Alfresco_Rest_People extends Alfresco_Rest_Abstract
     /*
      * List users
      */
-    public function listPeople($filter = null) {
+    public function listPeople($filter = null)
+    {
         $url =
             $this->getBaseUrl() . "/api/" .
             $this->_peopleBaseUrl;
@@ -20,12 +21,11 @@ class Alfresco_Rest_People extends Alfresco_Rest_Abstract
         }
         
         $curlObj = new CurlClient();
-        $resultJson = $curlObj->doGetRequest($url);
-        $result = json_decode($resultJson, true);
+        $result = $curlObj->doGetRequest($url);
+
         return $result['people']; // $result['people'][0]['firstName']
     }
     
-
     /*
      * Get person
      * GET /alfresco/service/api/people/{userName}
@@ -33,7 +33,8 @@ class Alfresco_Rest_People extends Alfresco_Rest_Abstract
      * returns
      * Assoc array
      */
-    public function getPerson($userName) {
+    public function getPerson($userName)
+    {
         $url =
             $this->getBaseUrl() . "/api/" .
             $this->_peopleBaseUrl . "/" .
@@ -42,15 +43,16 @@ class Alfresco_Rest_People extends Alfresco_Rest_Abstract
         $url = $this->addAlfTicketUrl($url);
         
         $curlObj = new CurlClient();
-        $resultJson = $curlObj->doGetRequest($url);
-        $result = json_decode($resultJson, true);
+        $result = $curlObj->doGetRequest($url);
+
         return $result;
     }
     
     /*
      * Get the groups of a person
      */
-    public function getGroups($userName) {
+    public function getGroups($userName)
+    {
         $url =
             $this->getBaseUrl() . "/" .
             'getGroups';
@@ -58,8 +60,8 @@ class Alfresco_Rest_People extends Alfresco_Rest_Abstract
         $url = $this->addAlfTicketUrl($url);
         
         $curlObj = new CurlClient();
-        $resultJson = $curlObj->doGetRequest($url);
-        $result = json_decode($resultJson, true);
+        $result = $curlObj->doGetRequest($url);
+
         return (isset($result['groups'])) ? $result['groups'] : array();
     }
 }

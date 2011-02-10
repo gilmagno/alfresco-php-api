@@ -7,7 +7,8 @@ class Alfresco_Rest_Groups extends Alfresco_Rest_Abstract
      * List groups
      * GET /alfresco/service/api/groups?shortNameFilter={shortNameFilter?}&zone={zone?}
      */
-    public function listGroups($shortNameFilter = null, $zone = null) {
+    public function listGroups($shortNameFilter = null, $zone = null)
+    {
         $url =
             $this->getBaseUrl() . "/api/" .
             $this->_groupsBaseUrl;
@@ -25,16 +26,17 @@ class Alfresco_Rest_Groups extends Alfresco_Rest_Abstract
         }
         
         $curlObj = new CurlClient();
-        $resultJson = $curlObj->doGetRequest($url);
-        $result = json_decode($resultJson, true);
-        return $result['data']; // $result['data'][0]['shortName']
+        $result = $curlObj->doGetRequest($url);
+        
+        return $result['data'];
     }
     
     /*
      * Get the list of child authorities for a group
      * GET /alfresco/service/api/groups/{shortName}/parents?level={level?}
      */
-    public function listParents($shortName, $level = 'ALL') {
+    public function listParents($shortName, $level = 'ALL')
+    {
         $url =
             $this->getBaseUrl() . "/api/" .
             $this->_groupsBaseUrl . "/" .
@@ -48,8 +50,8 @@ class Alfresco_Rest_Groups extends Alfresco_Rest_Abstract
         }
         
         $curlObj = new CurlClient();
-        $resultJson = $curlObj->doGetRequest($url);
-        $result = json_decode($resultJson, true);
+        $result = $curlObj->doGetRequest($url);
+
         return $result['data']; // $result['data'][0]
     }
     
@@ -57,7 +59,8 @@ class Alfresco_Rest_Groups extends Alfresco_Rest_Abstract
      * Get the list of child authorities for a group
      * GET /alfresco/service/api/groups/{shortName}/children?authorityType={authorityType?}
      */
-    public function listChildren($shortName, $authorityType = null) {
+    public function listChildren($shortName, $authorityType = null)
+    {
         $url =
             $this->getBaseUrl() . "/api/" .
             $this->_groupsBaseUrl . "/" .
@@ -71,8 +74,8 @@ class Alfresco_Rest_Groups extends Alfresco_Rest_Abstract
         }
         
         $curlObj = new CurlClient();
-        $resultJson = $curlObj->doGetRequest($url);
-        $result = json_decode($resultJson, true);
+        $result = $curlObj->doGetRequest($url);
+
         return $result['data']; // $result['data'][0]
     }
     
@@ -80,7 +83,8 @@ class Alfresco_Rest_Groups extends Alfresco_Rest_Abstract
      * Get details of a group
      * GET /alfresco/service/api/groups/{shortName}
      */
-    public function getGroup($shortName) {
+    public function getGroup($shortName)
+    {
         $url =
             $this->getBaseUrl() . "/api/" .
             $this->_groupsBaseUrl . "/" .
@@ -89,8 +93,8 @@ class Alfresco_Rest_Groups extends Alfresco_Rest_Abstract
         $url = $this->addAlfTicketUrl($url);
        
         $curlObj = new CurlClient();
-        $resultJson = $curlObj->doGetRequest($url);
-        $result = json_decode($resultJson, true);
+        $result = $curlObj->doGetRequest($url);
+
         return $result['data']; // $result['data'][0]
     }
 }
