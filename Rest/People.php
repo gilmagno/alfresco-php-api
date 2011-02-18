@@ -53,10 +53,7 @@ class Alfresco_Rest_People extends Alfresco_Rest_Abstract
      */
     public function getGroups($userName)
     {
-        $url =
-            $this->getBaseUrl() . "/" .
-            'getGroups';
-        
+        $url = $this->getBaseUrl() . "/" . 'getGroups';
         $url = $this->addAlfTicketUrl($url);
         
         $curlObj = new CurlClient();
