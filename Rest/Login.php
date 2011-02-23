@@ -23,7 +23,11 @@ class Alfresco_Rest_Login extends Alfresco_Rest_Abstract
             throw new Exception($this->getAlfrescoErrorMessage($result));
         }
         
-        $this->setTicket($result['data']['ticket']);
+        if (!$result) {
+        	throw new Exception("Não foi possível se conectar ao serviço de autenticação");
+        }
+        
+        //$this->setTicket($result['data']['ticket']);
         $ticket = $result['data']['ticket'];
         return array('ticket' => $ticket);
     }
