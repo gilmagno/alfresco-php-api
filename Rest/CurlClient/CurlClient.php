@@ -35,19 +35,14 @@ class CurlClient
         
         if ($returnFormat == self::FORMAT_JSON) {
             $getAdapterObj = $this->getGetAdapter(self::FORMAT_JSON);
-            $result = $getAdapterObj->decode($this->_adjustJsonData($result), true);
+            $result = $getAdapterObj->decode($result, true);
         }
+        
 //        print '<pre>'; var_dump($result); print '</pre>'; exit;
         
         return $result;
     }
     
-    protected function _adjustJsonData($jsonData)
-    {
-    	$jsonData = preg_replace('/(?:(?:\r\n|\r|\n)\s*){2}/s', "\\n", $jsonData); //JSON requires \n to be escaped
-    	return $jsonData;
-    }
-
     public function doPostRequest(
         $url, $postData, $postDataFormat = self::DEFAULT_INPUT_FORMAT, $returnFormat = self::DEFAULT_RETURN_FORMAT
         ) {
@@ -67,7 +62,7 @@ class CurlClient
         // Decoding
         if ($returnFormat != self::FORMAT_FORMDATA) {
             $getAdapterObj = $this->getGetAdapter($returnFormat);
-            $return = $getAdapterObj->decode($this->_adjustJsonData($result), true);
+            $return = $getAdapterObj->decode($result, true);
         }
         
         return $return;
