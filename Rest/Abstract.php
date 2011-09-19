@@ -53,18 +53,6 @@ abstract class Alfresco_Rest_Abstract
         return $url;
     }
     
-    /*
-     * Desuso por causa do Adapter
-     */
-    public function postToJson($postArgs)
-    {
-        $json  = "{";
-        $json .= "\"name\" : \"" . $postArgs['name'] . "\",";
-        $json .= "}";
-        
-        return $json;
-    }
-    
     public function isAlfrescoError($return)
     {
         if (is_array($return) && isset($return['exception'])) {
@@ -82,13 +70,39 @@ abstract class Alfresco_Rest_Abstract
     
     protected function _getResultFromUrl($url)
     {
-        $curlObj = new CurlClient();
-        $result = $curlObj->doGetRequest($url);
+        $result = $this->_getCurlClient()->doGetRequest($url);
         
         if ($this->isAlfrescoError($result)) {
             throw new Exception($this->getAlfrescoErrorMessage($result));
         }
         
         return $result;
+    }
+    
+    protected function _doPostRequest($url, $postData)
+    {
+    	$result = $this->_getCurlClient()->doPostRequest($url, $postData);
+    	 
+    	if ($this->isAlfrescoError($result)) {
+    		throw new Alfresco_Rest_Exception($this->getAlfrescoErrorMessage($result));
+    	}
+    	 
+    	return $result;
+    }
+    
+    protected function _doGetRequest($url)
+    {
+    	$result = $this->_getCurlClient()->doGetRequest($url);
+    	 
+    	if ($this->isAlfrescoError($result)) {
+    		throw new Alfresco_Rest_Exception($this->getAlfrescoErrorMessage($result));
+    	}
+    	 
+    	return $result;
+    }
+    
+    protected function _getCurlClient()
+    {
+    	return new CurlClient();
     }
 }

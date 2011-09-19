@@ -4,7 +4,8 @@ class Alfresco_Rest_Login extends Alfresco_Rest_Abstract
     private $_loginBaseUrl = 'login';
     private $_loginTicketUrl = 'ticket';
     
-    public function __construct($url) {
+    public function __construct($url)
+    {
        $this->setBaseUrl($url);
     }
     
@@ -15,20 +16,14 @@ class Alfresco_Rest_Login extends Alfresco_Rest_Abstract
         $postData['username'] = $username;
         $postData['password'] = $password;
         
-        $curlObj = new CurlClient();
-        
-        $result = $curlObj->doPostRequest($url, $postData);
-        
-        if ($this->isAlfrescoError($result)) {
-            throw new Exception($this->getAlfrescoErrorMessage($result));
-        }
+        $result = $this->_doPostRequest($url, $postData);
         
         if (!$result) {
-        	throw new Exception("Não foi possível se conectar ao serviço de autenticação");
+        	throw new Alfresco_Rest_Exception("Unable to connect to authentication service.");
         }
         
-        //$this->setTicket($result['data']['ticket']);
         $ticket = $result['data']['ticket'];
+        
         return array('ticket' => $ticket);
     }
 
@@ -38,16 +33,10 @@ class Alfresco_Rest_Login extends Alfresco_Rest_Abstract
      */
     public function logout($ticket)
     {
-        $url =
-            $this->getBaseUrl() . "/api/" .
-            $this->_loginBaseUrl . "/" .
-            $this->_loginTicketUrl . "/" .
-            $ticket;
-        
+        $url = $this->getBaseUrl() . "/api/" . $this->_loginBaseUrl . "/" . $this->_loginTicketUrl . "/" . $ticket;
         $url = $this->addAlfTicketUrl($url);
         
-        $curlObj = new CurlClient();
-        $result = $curlObj->doDeleteRequest($url);
+        $result = $this->_getCurlClient()->doDeleteRequest($url);
         
         return $result;
         // TODO configurar retorno
@@ -68,16 +57,10 @@ class Alfresco_Rest_Login extends Alfresco_Rest_Abstract
      */
     public function validate()
     {
-        $url =
-            $this->getBaseUrl() . "/api/" .
-            $this->_loginBaseUrl. "/" .
-            $this->_loginTicketUrl . "/" .
-            $this->getTicket();
-        
+        $url = "{$this->getBaseUrl()}/api/{$this->_loginBaseUrl}/{$this->_loginTicketUrl}/{$this->getTicket()}";
         $url = $this->addAlfTicketUrl($url);
-        $curlObj = new CurlClient();
         
-        $result = trim($curlObj->doGetRequest($url, CurlClient::FORMAT_STRING));
+        $result = trim($this->_getCurlClient()->doGetRequest($url, CurlClient::FORMAT_STRING));
         
         return (strpos($result, 'TICKET_') > -1);
     }
