@@ -119,6 +119,30 @@ abstract class Alfresco_Rest_Abstract
     	return $result;
     }
     
+    protected function _doAuthenticatedPostRequest($url, $postData)
+    {
+    	$url = $this->addAlfTicketUrl($url);
+    	return $this->_doPostRequest($url, $postData);
+    }
+    
+    protected function _doAuthenticatedPostFormDataRequest($url, $postData)
+    {
+    	$url = $this->addAlfTicketUrl($url);
+    	return $this->_doPostFormDataRequest($url, $postData);
+    }
+    
+    protected function _doAuthenticatedGetRequest($url)
+    {
+    	$url = $this->addAlfTicketUrl($url);
+    	return $this->_doGetRequest($url);
+    }
+    
+    protected function _doAuthenticatedGetStringRequest($url)
+    {
+    	$url = $this->addAlfTicketUrl($url);
+    	return $this->_doGetStringRequest($url);
+    }
+    
     protected function _getCurlClient()
     {
     	return new CurlClient();

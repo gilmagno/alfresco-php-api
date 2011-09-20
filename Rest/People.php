@@ -11,13 +11,12 @@ class Alfresco_Rest_People extends Alfresco_Rest_Abstract
     public function listPeople($filter = null)
     {
         $url = $this->getBaseUrl() . "/api/" . $this->_peopleBaseUrl;
-        $url = $this->addAlfTicketUrl($url);
         
         if (isset($filter)) {
             $url .= "&filter=" . $filter;
         }
         
-        $result = $this->_doGetRequest($url);
+        $result = $this->_doAuthenticatedGetRequest($url);
 
         return $result['people']; // $result['people'][0]['firstName']
     }
@@ -32,9 +31,7 @@ class Alfresco_Rest_People extends Alfresco_Rest_Abstract
     public function getPerson($userName)
     {
         $url = $this->getBaseUrl() . "/api/" . $this->_peopleBaseUrl . "/" . $userName;
-        $url = $this->addAlfTicketUrl($url);
-        
-        $result = $this->_doGetRequest($url);
+        $result = $this->_doAuthenticatedGetRequest($url);
 
         return $result;
     }

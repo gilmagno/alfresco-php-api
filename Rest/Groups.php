@@ -10,7 +10,6 @@ class Alfresco_Rest_Groups extends Alfresco_Rest_Abstract
     public function listGroups($shortNameFilter = null, $zone = null)
     {
         $url = $this->getBaseUrl() . "/api/" . $this->_groupsBaseUrl;
-        $url = $this->addAlfTicketUrl($url);
         
         if (isset($filter)) {
             $url .= "&shortNameFilter=" . $shortNameFilter;
@@ -22,7 +21,7 @@ class Alfresco_Rest_Groups extends Alfresco_Rest_Abstract
             $url .= "&zone=" . $zone;
         }
         
-        $result = $this->_getCurlClient()->doGetRequest($url);
+        $result = $this->_doAuthenticatedGetRequest($url);
         
         return $result['data'];
     }
@@ -34,13 +33,12 @@ class Alfresco_Rest_Groups extends Alfresco_Rest_Abstract
     public function listParents($shortName, $level = 'ALL')
     {
         $url = $this->getBaseUrl() . "/api/" . $this->_groupsBaseUrl . "/" . $shortName . "/" . "parents";
-        $url = $this->addAlfTicketUrl($url);
         
         if (isset($level)) {
             $url .= "&level=" . $level;
         }
         
-        $result = $this->_getCurlClient()->doGetRequest($url);
+        $result = $this->_doAuthenticatedGetRequest($url);
 
         return $result['data']; // $result['data'][0]
     }
@@ -52,13 +50,12 @@ class Alfresco_Rest_Groups extends Alfresco_Rest_Abstract
     public function listChildren($shortName, $authorityType = null)
     {
         $url = $this->getBaseUrl() . "/api/" . $this->_groupsBaseUrl . "/" . $shortName . "/" . "children";
-        $url = $this->addAlfTicketUrl($url);
         
         if (isset($authorityType)) {
             $url .= "&authorityType=" . $authorityType;
         }
         
-        $result = $this->_getCurlClient()->doGetRequest($url);
+        $result = $this->_doAuthenticatedGetRequest($url);
 
         return $result['data']; // $result['data'][0]
     }
@@ -70,9 +67,7 @@ class Alfresco_Rest_Groups extends Alfresco_Rest_Abstract
     public function getGroup($shortName)
     {
         $url = $this->getBaseUrl() . "/api/" . $this->_groupsBaseUrl . "/" . $shortName;
-        $url = $this->addAlfTicketUrl($url);
-       
-        $result = $this->_getCurlClient()->doGetRequest($url);
+        $result = $this->_doAuthenticatedGetRequest($url);
 
         return $result['data']; // $result['data'][0]
     }

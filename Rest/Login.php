@@ -56,9 +56,7 @@ class Alfresco_Rest_Login extends Alfresco_Rest_Abstract
     public function validate()
     {
         $url = "{$this->getBaseUrl()}/api/{$this->_loginBaseUrl}/{$this->_loginTicketUrl}/{$this->getTicket()}";
-        $url = $this->addAlfTicketUrl($url);
-        
-        $result = trim($this->_getCurlClient()->doGetRequest($url, CurlClient::FORMAT_STRING));
+        $result = trim($this->_doAuthenticatedGetStringRequest($url));
         
         return (strpos($result, 'TICKET_') > -1);
     }
