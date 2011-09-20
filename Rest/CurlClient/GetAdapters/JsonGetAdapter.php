@@ -1,8 +1,5 @@
 <?php
-
-//require_once('GetAdaptersInterface.php');
-
-class CurlClient_GetAdapters_JsonGetAdapter implements CurlClient_GetAdapters_Interface
+class Alfresco_Rest_CurlClient_GetAdapters_JsonGetAdapter implements Alfresco_Rest_CurlClient_GetAdapters_Interface
 {
     public function decode($data, $assoc = false) {
         // FIXME fazer ou procurar função que valide json

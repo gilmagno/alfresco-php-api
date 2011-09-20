@@ -1,8 +1,7 @@
 <?php
-
-//require_once("PostAdapterInterface.php");
-
-class CurlClient_PostAdapters_JsonPostAdapter extends CurlClient_GetAdapters_JsonGetAdapter implements CurlClient_PostAdapters_Interface
+class Alfresco_Rest_CurlClient_PostAdapters_JsonPostAdapter 
+	extends Alfresco_Rest_CurlClient_GetAdapters_JsonGetAdapter 
+	implements Alfresco_Rest_CurlClient_PostAdapters_Interface
 {
     public function encode($data) {
         $json = json_encode($data);

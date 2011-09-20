@@ -1,11 +1,8 @@
 <?php
+require_once('CurlClient/GetAdapters/JsonGetAdapter.php');
+require_once('CurlClient/PostAdapters/JsonPostAdapter.php');
 
-// TODO corrigir decodes entre a API do alfresco e o curl client
-
-require_once('GetAdapters/JsonGetAdapter.php');
-require_once('PostAdapters/JsonPostAdapter.php');
-
-class CurlClient
+class Alfresco_Rest_CurlClient
 {
     const FORMAT_STRING = 'string';
     const FORMAT_FORMDATA = 'formdata';
@@ -82,7 +79,7 @@ class CurlClient
 
     public function getGetAdapter($adapterFormat = self::DEFAULT_INPUT_FORMAT) {
         $adapterFormat = ucfirst(strtolower($adapterFormat));
-        $classname = "CurlClient_GetAdapters_" . $adapterFormat . "GetAdapter";
+        $classname = "Alfresco_Rest_CurlClient_GetAdapters_" . $adapterFormat . "GetAdapter";
         
         $adapterObject = new $classname();
         
@@ -91,7 +88,7 @@ class CurlClient
     
     public function getPostAdapter($adapterFormat = self::DEFAULT_RETURN_FORMAT) {
         $adapterFormat = ucfirst(strtolower($adapterFormat));
-        $classname = "CurlClient_PostAdapters_" . $adapterFormat . "PostAdapter";
+        $classname = "Alfresco_Rest_CurlClient_PostAdapters_" . $adapterFormat . "PostAdapter";
         
         $adapterObject = new $classname();
         

@@ -1,6 +1,6 @@
 <?php
 require_once('Exception.php');
-require_once('CurlClient/CurlClient.php');
+require_once('CurlClient.php');
 
 abstract class Alfresco_Rest_Abstract
 {
@@ -114,7 +114,7 @@ abstract class Alfresco_Rest_Abstract
     
 	protected function _doGetStringRequest($url)
     {
-    	$result = $this->_getCurlClient()->doGetRequest($url, CurlClient::FORMAT_STRING);
+    	$result = $this->_getCurlClient()->doGetRequest($url, Alfresco_Rest_CurlClient::FORMAT_STRING);
     	 
     	return $result;
     }
@@ -145,6 +145,6 @@ abstract class Alfresco_Rest_Abstract
     
     protected function _getCurlClient()
     {
-    	return new CurlClient();
+    	return new Alfresco_Rest_CurlClient();
     }
 }
