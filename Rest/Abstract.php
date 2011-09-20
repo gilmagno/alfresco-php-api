@@ -90,6 +90,17 @@ abstract class Alfresco_Rest_Abstract
     	return $result;
     }
     
+    protected function _doPostFormDataRequest($url, $postData)
+    {
+    	$result = $this->_getCurlClient()->doPostRequest($url, $postData, 'formdata');
+    
+    	if ($this->isAlfrescoError($result)) {
+    		throw new Alfresco_Rest_Exception($this->getAlfrescoErrorMessage($result));
+    	}
+    
+    	return $result;
+    }
+    
     protected function _doGetRequest($url)
     {
     	$result = $this->_getCurlClient()->doGetRequest($url);
@@ -97,6 +108,13 @@ abstract class Alfresco_Rest_Abstract
     	if ($this->isAlfrescoError($result)) {
     		throw new Alfresco_Rest_Exception($this->getAlfrescoErrorMessage($result));
     	}
+    	 
+    	return $result;
+    }
+    
+	protected function _doGetStringRequest($url)
+    {
+    	$result = $this->_getCurlClient()->doGetRequest($url, CurlClient::FORMAT_STRING);
     	 
     	return $result;
     }

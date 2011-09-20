@@ -52,8 +52,6 @@ class Alfresco_Rest_Login extends Alfresco_Rest_Abstract
      * If the ticket is valid retuns, STATUS_SUCCESS (200)
      * If the ticket is not valid return, STATUS_NOT_FOUND (404)
      * If the ticket does not belong to the current user, STATUS_NOT_FOUND (404)
-     * 
-     * FIXME alfresco login validate
      */
     public function validate()
     {
