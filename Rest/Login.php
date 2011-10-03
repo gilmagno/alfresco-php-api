@@ -13,10 +13,7 @@ class Alfresco_Rest_Login extends Alfresco_Rest_Abstract
     {
         $url = $this->getBaseUrl() . "/api/" . $this->_loginBaseUrl;
         
-        $postData['username'] = $username;
-        $postData['password'] = $password;
-        
-        $result = $this->_doPostRequest($url, $postData);
+        $result = $this->_doPostRequest($url, array('username' => $username, 'password' => $password));
         
         if (!$result) {
         	throw new Alfresco_Rest_Exception("Unable to connect to authentication service.");

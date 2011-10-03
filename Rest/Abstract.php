@@ -18,7 +18,14 @@ require_once 'CurlClient.php';
  */
 abstract class Alfresco_Rest_Abstract
 {
+    /**
+     * @var string
+     */
     private $_baseUrl;
+    
+    /**
+     * @var string
+     */
     private $_ticket;
     
     public function __construct($url, $ticket = null) {
@@ -28,24 +35,44 @@ abstract class Alfresco_Rest_Abstract
         }
     }
     
+    /**
+     * Alfresco Base Service URL
+     * 
+     * example: http://localhost:8080/alfresco/service/
+     * 
+     * @return string
+     */
     public function getBaseUrl() {
         return $this->_alfrescoBaseUrl;
     }
     
+    /**
+     * @param $alfrescoBaseUrl string
+     */
     public function setBaseUrl($alfrescoBaseUrl) {
         $this->_alfrescoBaseUrl = $alfrescoBaseUrl;
     }
     
+    /**
+     * Returns the logged user's auth ticket
+     * 
+     * @return string
+     */
     public function getTicket() {
         return $this->_ticket;
     }
     
+    /**
+     * @param $ticket string
+     */
     public function setTicket($ticket) {
         $this->_ticket = $ticket;
     }
     
-    /*
-     * Put an "alf_ticket=<ticket>" on the given URL
+    /**
+     * Adds an "alf_ticket=<ticket>" on the given URL
+     * 
+     * @return string
      */
     public function addAlfTicketUrl($url) {
         $ticket = $this->getTicket();
@@ -57,19 +84,39 @@ abstract class Alfresco_Rest_Abstract
         return $url;
     }
     
+    /**
+     * Verifies if the specified $return hash is an Alfresco REST Exception hash
+     * 
+     * @param $return $return service's return hash
+     * @return boolean;
+     */
     public function isAlfrescoError($return) {
         if (is_array($return) && isset($return['exception'])) {
             return true;
         }
+        
         return false;
     }
     
+    /**
+     * Returns the error message from an Alfresco REST Exception hash
+     * 
+     * @param $return service's response hash
+     * @return string|null
+     */
     public function getAlfrescoErrorMessage($return) {
         if ($this->isAlfrescoError($return)) {
             return $return['message'];
         }
     }
     
+    /**
+     * Makes a POST request for the given Alfresco service's URL
+     * 
+     * @param $url service's url
+     * @param $postData hash with the postdata. Example: array('key' => 'value', 'key2' => 'value2')
+     * @return array the service's response
+     */
     protected function _doPostRequest($url, $postData) {
     	$result = $this->_getCurlClient()->doPostRequest($url, $postData);
     	 
@@ -80,6 +127,13 @@ abstract class Alfresco_Rest_Abstract
     	return $result;
     }
     
+    /**
+     * Makes a formdata POST request for the given Alfresco service's URL
+     * 
+     * @param $url service's url
+     * @param $postData hash with the postdata. Example: array('key' => 'value', 'key2' => 'value2')
+     * @return array the service's response
+     */
     protected function _doPostFormDataRequest($url, $postData) {
     	$result = $this->_getCurlClient()->doPostRequest($url, $postData, Alfresco_Rest_CurlClient::FORMAT_FORMDATA);
     
@@ -90,6 +144,12 @@ abstract class Alfresco_Rest_Abstract
     	return $result;
     }
     
+    /**
+     * Makes a GET request for the given Alfresco service's URL
+     * 
+     * @param $url service's url
+     * @return array the service's response
+     */
     protected function _doGetRequest($url) {
     	$result = $this->_getCurlClient()->doGetRequest($url);
     	 
@@ -100,26 +160,61 @@ abstract class Alfresco_Rest_Abstract
     	return $result;
     }
     
+    /**
+     * Makes a GET request for the given Alfresco service's URL, but gets the response as STRING
+     * 
+     * @param $url service's url
+     * @return string the service's response
+     */
 	protected function _doGetStringRequest($url) {
     	return $this->_getCurlClient()->doGetRequest($url, Alfresco_Rest_CurlClient::FORMAT_STRING);
     }
     
+    /**
+     * Makes an authenticated formdata POST request for the given Alfresco service's URL
+     * 
+     * @param $url service's url
+     * @return array the service's response
+     */
     protected function _doAuthenticatedPostRequest($url, $postData) {
     	return $this->_doPostRequest($this->addAlfTicketUrl($url), $postData);
     }
     
+    /**
+     * Makes an authenticated POST request for the given Alfresco service's URL
+     * 
+     * @param $url service's url
+     * @return array the service's response
+     */
     protected function _doAuthenticatedPostFormDataRequest($url, $postData) {
     	return $this->_doPostFormDataRequest($this->addAlfTicketUrl($url), $postData);
     }
     
+    /**
+     * Makes an authenticated GET request for the given Alfresco service's URL
+     * 
+     * @param $url service's url
+     * @return array the service's response
+     */
     protected function _doAuthenticatedGetRequest($url) {
     	return $this->_doGetRequest($this->addAlfTicketUrl($url));
     }
     
+    /**
+     * Makes an authenticated GET request for the given Alfresco service's URL, but gets the response as STRING
+     * 
+     * @param $url service's url
+     * @return string the service's response
+     */
     protected function _doAuthenticatedGetStringRequest($url) {
     	return $this->_doGetStringRequest($this->addAlfTicketUrl($url));
     }
     
+    /**
+     * Return the Curl Client
+     * 
+     * @return Alfresco_Rest_CurlClient
+     */
     protected function _getCurlClient() {
     	return new Alfresco_Rest_CurlClient();
     }
