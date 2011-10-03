@@ -171,6 +171,22 @@ abstract class Alfresco_Rest_Abstract
     }
     
     /**
+     * Makes a DELETE request for the given Alfresco service's URL
+     * 
+     * @param $url service's url
+     * @return array the service's response
+     */
+    protected function _doDeleteRequest($url) {
+        $result = $this->_getCurlClient()->doDeleteRequest($url);
+         
+        if ($this->isAlfrescoError($result)) {
+            throw new Alfresco_Rest_Exception($this->getAlfrescoErrorMessage($result));
+        }
+         
+        return $result;
+    }
+    
+    /**
      * Makes an authenticated formdata POST request for the given Alfresco service's URL
      * 
      * @param $url service's url
@@ -208,6 +224,16 @@ abstract class Alfresco_Rest_Abstract
      */
     protected function _doAuthenticatedGetStringRequest($url) {
     	return $this->_doGetStringRequest($this->addAlfTicketUrl($url));
+    }
+    
+    /**
+     * Makes an authenticated DELETE request for the given Alfresco service's URL
+     * 
+     * @param $url service's url
+     * @return string the service's response
+     */
+    protected function _doAuthenticatedDeleteRequest($url) {
+        return $this->_doDeleteRequest($this->addAlfTicketUrl($url));
     }
     
     /**

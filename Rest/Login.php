@@ -1,54 +1,71 @@
 <?php
+/**
+ * Login/Logout service
+ * 
+ * @author Gil Magno <gilmagno@gmail.com>
+ * @package Alfresco-PHP
+ * @license http://opensource.org/licenses/gpl-3.0.html GNU General Public License 3
+ */
 class Alfresco_Rest_Login extends Alfresco_Rest_Abstract
 {
+    /**
+     * URL package name for the services (this will be added to the alfresco base services url)
+     * 
+     * @var string
+     */
     private $_loginBaseUrl = 'login';
+    
+    /**
+     * URL param name for the ticket (this will be added to the loginBaseUrl)
+     * 
+     * @var string
+     */
     private $_loginTicketUrl = 'ticket';
     
-    public function __construct($url)
-    {
-       $this->setBaseUrl($url);
-    }
-    
+    /**
+     * Basic authentication service
+     * 
+     * POST /alfresco/service/api/login
+     * 
+     * @param $username
+     * @param $password
+     * @return array array with the authentication ticket. Example: array('ticket' => 'ahq812GasLPlsmNMskneulasJsjak')
+     */
     public function login($username, $password)
     {
-        $url = $this->getBaseUrl() . "/api/" . $this->_loginBaseUrl;
+        $url = "{$this->getBaseUrl()}/api/{$this->_loginBaseUrl}";
         
         $result = $this->_doPostRequest($url, array('username' => $username, 'password' => $password));
         
-        if (!$result) {
+        if (!$result OR !isset($result['data'])) {
         	throw new Alfresco_Rest_Exception("Unable to connect to authentication service.");
         }
         
-        $ticket = $result['data']['ticket'];
-        
-        return array('ticket' => $ticket);
+        return $result['data'];
     }
 
     /*
      * Logout
+     * 
      * DELETE /alfresco/service/api/login/ticket/{ticket}
+     * 
+     * @return array service's response
      */
     public function logout($ticket)
     {
-        $url = $this->getBaseUrl() . "/api/" . $this->_loginBaseUrl . "/" . $this->_loginTicketUrl . "/" . $ticket;
-        $url = $this->addAlfTicketUrl($url);
+        $url = "{$this->getBaseUrl()}/api/{$this->_loginBaseUrl}/{$this->_loginTicketUrl}/$ticket";
         
-        $result = $this->_getCurlClient()->doDeleteRequest($url);
-        
-        return $result;
-        // TODO configurar retorno
+        return $this->_doAuthenticatedDeleteRequest($url);
     }
     
-    /*
+    /**
      * Validates the specified ticket is still valid. 
      * The ticket may be invalid, or expired, or the user may have been locked out. 
      * For security reasons this script will not validate the ticket of another user.
+     * 
      * GET /alfresco/service/api/login/ticket/<ticket>?alf_ticket=<ticket>
      * 
-     * returns
-     * If the ticket is valid retuns, STATUS_SUCCESS (200)
-     * If the ticket is not valid return, STATUS_NOT_FOUND (404)
-     * If the ticket does not belong to the current user, STATUS_NOT_FOUND (404)
+     * @return boolean
      */
     public function validate()
     {
