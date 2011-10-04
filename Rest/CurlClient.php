@@ -7,6 +7,8 @@ class Alfresco_Rest_CurlClient
     const FORMAT_STRING = 'string';
     const FORMAT_FORMDATA = 'formdata';
     const FORMAT_JSON = 'json';
+    const FORMAT_XML = 'xml';
+    const FORMAT_ATOM = 'atom';
     const DEFAULT_INPUT_FORMAT = self::FORMAT_JSON;
     const DEFAULT_RETURN_FORMAT = self::FORMAT_JSON;
     
@@ -33,9 +35,10 @@ class Alfresco_Rest_CurlClient
         if ($returnFormat == self::FORMAT_JSON) {
             $getAdapterObj = $this->getGetAdapter(self::FORMAT_JSON);
             $result = $getAdapterObj->decode($result, true);
+        } elseif ($returnFormat == self::FORMAT_ATOM) {
+            $getAdapterObj = $this->getGetAdapter(self::FORMAT_ATOM);
+            $result = $getAdapterObj->decode($result);
         }
-        
-//        print '<pre>'; var_dump($result); print '</pre>'; exit;
         
         return $result;
     }

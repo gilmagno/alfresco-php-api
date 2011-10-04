@@ -217,6 +217,16 @@ abstract class Alfresco_Rest_Abstract
     }
     
     /**
+     * Makes an authenticated GET request for the given Alfresco service's URL
+     * 
+     * @param $url service's url
+     * @return array the service's response
+     */
+    protected function _doAuthenticatedGetAtomRequest($url) {
+        return $this->_getCurlClient()->doGetRequest($this->addAlfTicketUrl($url), Alfresco_Rest_CurlClient::FORMAT_ATOM);
+    }
+    
+    /**
      * Makes an authenticated GET request for the given Alfresco service's URL, but gets the response as STRING
      * 
      * @param $url service's url

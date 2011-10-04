@@ -13,6 +13,7 @@ class Alfresco_Rest_People extends Alfresco_Rest_Abstract
     /**
      * List users
      * 
+     * @param $filter
      * @return Alfresco_Person[]
      */
     public function listPeople($filter = null)
