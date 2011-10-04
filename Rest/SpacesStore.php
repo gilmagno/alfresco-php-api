@@ -6,8 +6,8 @@
  * @package Alfresco-PHP
  * @license http://opensource.org/licenses/gpl-3.0.html GNU General Public License 3
  */
-class Alfresco_Rest_SpacesStore extends Alfresco_Rest_Abstract {
-    
+class Alfresco_Rest_SpacesStore extends Alfresco_Rest_Abstract
+{
     /**
      * Return the ROOT folders from alfresco SpacesStore (children from app:company_home)
      * 
@@ -15,7 +15,8 @@ class Alfresco_Rest_SpacesStore extends Alfresco_Rest_Abstract {
      * 
      * @return Alfresco_Node[]
      */
-    public function getRootFolders() {
+    public function getRootFolders()
+    {
         $url = "{$this->getBaseUrl()}/cmis/p/children";
         $result = $this->_doAuthenticatedGetAtomRequest($url);
         
@@ -31,16 +32,20 @@ class Alfresco_Rest_SpacesStore extends Alfresco_Rest_Abstract {
      * Extracts Alfresco_Node objects from a CMIS Atom Feed XML response
      * 
      * @param SimpleXmlElement $atomNode
+     * 
      * @return Alfresco_Node
      */
-    protected function _getNodeFromAtom($atomNode) {
+    protected function _getNodeFromAtom($atomNode)
+    {
         $folder = new Alfresco_Node();
         $folder->id = $this->_getIdFromAtomNode($atomNode);
-        $folder->published = new DateTime($this->_getElementValue($atomNode, 'published'));
-        $folder->updated = new DateTime($this->_getElementValue($atomNode, 'updated'));
-        $folder->summary = $this->_getElementValue($atomNode, 'summary');
-        $folder->title = $this->_getElementValue($atomNode, 'title');
-        $folder->author = $this->_getElementValue($atomNode->getElementsByTagName('author')->item(0), 'name');
+        $folder->published = new DateTime($atomNode->getElementsByTagName('published')->item(0)->nodeValue);
+        $folder->updated = new DateTime($atomNode->getElementsByTagName('updated')->item(0)->nodeValue);
+        $folder->summary = $atomNode->getElementsByTagName('summary')->item(0)->nodeValue;
+        $folder->title = $atomNode->getElementsByTagName('title')->item(0)->nodeValue;
+        
+        $author = $atomNode->getElementsByTagName('author')->item(0);
+        $folder->author = $author->getElementsByTagName('name')->item(0)->nodeValue;
         
         //CMIS Properties
         foreach ($atomNode->getElementsByTagName('object') as $cmisObject) {
@@ -65,14 +70,12 @@ class Alfresco_Rest_SpacesStore extends Alfresco_Rest_Abstract {
      * So we just extract everything up to the last ":" character in order to get the actual ID.
      * 
      * @param SimpleXmlElement $atomNode
+     * 
      * @return string
      */
-    protected function _getIdFromAtomNode($atomNode) {
-        return preg_replace('/.*:/', '', (string) $this->_getElementValue($atomNode, 'id'));
-    }
-    
-    protected function _getElementValue($parent, $elementName) {
-        return $parent->getElementsByTagName($elementName)->item(0)->nodeValue;
+    protected function _getIdFromAtomNode($atomNode)
+    {
+        return preg_replace('/.*:/', '', (string) $atomNode->getElementsByTagName('id')->item(0)->nodeValue);
     }
     
     /**
@@ -81,9 +84,11 @@ class Alfresco_Rest_SpacesStore extends Alfresco_Rest_Abstract {
      * GET /cmis/s/workspace:SpacesStore/i/$id/children
      * 
      * @param string $id parent folder id
+     * 
      * @return Alfresco_Node[]
      */
-    public function getChildren($id) {
+    public function getChildren($id)
+    {
         $url = "{$this->getBaseUrl()}/cmis/s/workspace:SpacesStore/i/$id/children";
         $result = $this->_doAuthenticatedGetAtomRequest($url);
         
@@ -101,9 +106,11 @@ class Alfresco_Rest_SpacesStore extends Alfresco_Rest_Abstract {
      * GET /cmis/s/workspace:SpacesStore/i/$id/children
      * 
      * @param string $id parent folder id
+     * 
      * @return Alfresco_Node[]
      */
-    public function getNode($id) {
+    public function getNode($id)
+    {
         $url = "{$this->getBaseUrl()}/cmis/s/workspace:SpacesStore/i/$id/self";
         $result = $this->_doAuthenticatedGetAtomRequest($url);
         
