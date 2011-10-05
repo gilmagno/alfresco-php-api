@@ -14,6 +14,11 @@ require_once dirname(__FILE__) . '/../Node.php';
 class Alfresco_Rest_SpacesStore extends Alfresco_Rest_Abstract
 {
     /**
+     * CMIS Property name for the Node Type
+     */
+    const PROPERTY_OBJECT_TYPE = 'cmis:objectTypeId';
+    
+    /**
      * Return the ROOT folders from alfresco SpacesStore (children from app:company_home)
      * 
      * GET /cmis/p/children
@@ -47,32 +52,73 @@ class Alfresco_Rest_SpacesStore extends Alfresco_Rest_Abstract
         $folder->updated = new DateTime($atomNode->getElementsByTagName('updated')->item(0)->nodeValue);
         $folder->summary = $atomNode->getElementsByTagName('summary')->item(0)->nodeValue;
         $folder->title = $atomNode->getElementsByTagName('title')->item(0)->nodeValue;
-        
-        $author = $atomNode->getElementsByTagName('author')->item(0);
-        $folder->author = $author->getElementsByTagName('name')->item(0)->nodeValue;
+        $folder->author = $this->_getAuthorFromAtomNode($atomNode);
         
         //CMIS Properties
-        foreach ($atomNode->getElementsByTagName('object') as $cmisObject) {
-            $properties = $cmisObject->getElementsByTagName('properties')->item(0);
+        foreach ($this->_getCMISProperties($atomNode) as $property) {
+            $propertyDefinitionId = $property->getAttribute('propertyDefinitionId');
             
-            foreach ($properties->getElementsByTagName('*') as $property) {
-                if ($property->getAttribute('propertyDefinitionId') == 'cmis:objectTypeId') {
-                    $folder->type = $property->nodeValue;
-                    continue;
-                } elseif ($property->getAttribute('propertyDefinitionId') AND 
-                          strpos($property->getAttribute('propertyDefinitionId'), 'cmis:') === false AND 
-                          strpos($property->getAttribute('propertyDefinitionId'), 'cm:') === false AND 
-                          strpos($property->getAttribute('propertyDefinitionId'), 'app:') === false) {
-                    $metadata = new Alfresco_Metadata();
-                    $metadata->name = $property->getAttribute('propertyDefinitionId');
-                    $metadata->value = $property->nodeValue;
-                    $metadata->displayName = $property->getAttribute('displayName');
-                    $folder->metadata[] = $metadata;
-                }
+            if ($propertyDefinitionId == self::PROPERTY_OBJECT_TYPE) {
+                $folder->type = $property->nodeValue;
+            } elseif ($propertyDefinitionId && $this->_isCustomProperty($propertyDefinitionId)) {
+                $folder->metadata[] = $this->_getMetadataFromProperty($property);
             }
         }
         
         return $folder;
+    }
+
+    /**
+     * Returns the atom node's author
+     * 
+     * @param DOMElement $atomNode
+     * @return string
+     */
+    protected function _getAuthorFromAtomNode(DOMElement $atomNode)
+    {
+        return $atomNode->getElementsByTagName('author')->item(0)->getElementsByTagName('name')->item(0)->nodeValue;
+    }
+
+    /**
+     * Returns the CMIS properties from an atom node
+     * 
+     * @param DOMElement $atomNode
+     * @return DOMNodeList
+     */
+    protected function _getCMISProperties(DOMElement $atomNode)
+    {
+        return $atomNode->getElementsByTagName('object')->item(0)
+                        ->getElementsByTagName('properties')->item(0)
+                        ->getElementsByTagName('*');
+    }
+    
+    /**
+     * Returns an Alfresco_Metadata object from a DOMElement CMIS Property
+     * 
+     * @param DOMElement $property CMIS property
+     * @return Alfresco_Metadata
+     */
+    protected function _getMetadataFromProperty(DOMElement $property)
+    {
+        $metadata = new Alfresco_Metadata();
+        $metadata->name = $property->getAttribute('propertyDefinitionId');
+        $metadata->value = $property->nodeValue;
+        $metadata->displayName = $property->getAttribute('displayName');
+        
+        return $metadata;
+    }
+
+    /**
+     * Returns true if the property is not from CMIS or Alfresco
+     * 
+     * This method is intended to return true if the property is user-defined.
+     * 
+     * @param string $property property name
+     * @return boolean
+     */
+    protected function _isCustomProperty($property)
+    {
+        return strpos($property, 'cmis:') !== 0 && strpos($property, 'cm:') !== 0 && strpos($property, 'app:') !== 0;
     }
     
     /**
