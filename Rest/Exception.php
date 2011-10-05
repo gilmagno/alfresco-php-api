@@ -1,7 +1,9 @@
 <?php
 /**
- * Classe de Excessões de Regra de Negócio do SGC
- * @author bruno
+ * Rest Exception Class
+ * 
+ * @author Bruno Cavalcante <brunofcavalcante@gmail.com>
+ * @package Alfresco-PHP
  * @since 13/05/2010
  */
 class Alfresco_Rest_Exception extends Exception
@@ -13,8 +15,8 @@ class Alfresco_Rest_Exception extends Exception
     /**
      * Construct the exception
      *
-     * @param  string $msg
-     * @param  string $trace
+     * @param string $msg
+     * @param string $trace
      * @return void
      */
     public function __construct($msg = '', $description = null)

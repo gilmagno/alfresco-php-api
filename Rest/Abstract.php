@@ -132,6 +132,7 @@ abstract class Alfresco_Rest_Abstract
      * 
      * @param $url service's url
      * @param $postData hash with the postdata. Example: array('key' => 'value', 'key2' => 'value2')
+     * 
      * @return array the service's response
      */
     protected function _doPostFormDataRequest($url, $postData) {
@@ -148,6 +149,7 @@ abstract class Alfresco_Rest_Abstract
      * Makes a GET request for the given Alfresco service's URL
      * 
      * @param $url service's url
+     * 
      * @return array the service's response
      */
     protected function _doGetRequest($url) {
