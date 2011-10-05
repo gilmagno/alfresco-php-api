@@ -6,7 +6,8 @@
  * @package Alfresco-PHP
  * @license http://opensource.org/licenses/gpl-3.0.html GNU General Public License 3
  */
-class Alfresco_Person {
+class Alfresco_Person
+{
     /**
      * @var string
      */

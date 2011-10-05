@@ -1,6 +1,11 @@
 <?php
 /**
- * Represents the SpacesStore frmo Alfresco
+ * @see Alfresco_Node
+ */
+require_once dirname(__FILE__) . '/../Node.php';
+
+/**
+ * Alfresco SpacesStore methods
  * 
  * @author Bruno Cavalcante <brunofcavalcante@gmail.com>
  * @package Alfresco-PHP
@@ -32,7 +37,6 @@ class Alfresco_Rest_SpacesStore extends Alfresco_Rest_Abstract
      * Extracts Alfresco_Node objects from a CMIS Atom Feed XML response
      * 
      * @param SimpleXmlElement $atomNode
-     * 
      * @return Alfresco_Node
      */
     protected function _getNodeFromAtom($atomNode)
@@ -51,10 +55,19 @@ class Alfresco_Rest_SpacesStore extends Alfresco_Rest_Abstract
         foreach ($atomNode->getElementsByTagName('object') as $cmisObject) {
             $properties = $cmisObject->getElementsByTagName('properties')->item(0);
             
-            foreach ($properties->getElementsByTagName('propertyId') as $property) {
+            foreach ($properties->getElementsByTagName('*') as $property) {
                 if ($property->getAttribute('propertyDefinitionId') == 'cmis:objectTypeId') {
                     $folder->type = $property->nodeValue;
-                    break;
+                    continue;
+                } elseif ($property->getAttribute('propertyDefinitionId') AND 
+                          strpos($property->getAttribute('propertyDefinitionId'), 'cmis:') === false AND 
+                          strpos($property->getAttribute('propertyDefinitionId'), 'cm:') === false AND 
+                          strpos($property->getAttribute('propertyDefinitionId'), 'app:') === false) {
+                    $metadata = new Alfresco_Metadata();
+                    $metadata->name = $property->getAttribute('propertyDefinitionId');
+                    $metadata->value = $property->nodeValue;
+                    $metadata->displayName = $property->getAttribute('displayName');
+                    $folder->metadata[] = $metadata;
                 }
             }
         }
@@ -70,7 +83,6 @@ class Alfresco_Rest_SpacesStore extends Alfresco_Rest_Abstract
      * So we just extract everything up to the last ":" character in order to get the actual ID.
      * 
      * @param SimpleXmlElement $atomNode
-     * 
      * @return string
      */
     protected function _getIdFromAtomNode($atomNode)
@@ -84,7 +96,6 @@ class Alfresco_Rest_SpacesStore extends Alfresco_Rest_Abstract
      * GET /cmis/s/workspace:SpacesStore/i/$id/children
      * 
      * @param string $id parent folder id
-     * 
      * @return Alfresco_Node[]
      */
     public function getChildren($id)
@@ -93,7 +104,7 @@ class Alfresco_Rest_SpacesStore extends Alfresco_Rest_Abstract
         $result = $this->_doAuthenticatedGetAtomRequest($url);
         
         $folders = array();
-        foreach ($result->entry as $entry) {
+        foreach ($result->getElementsByTagName('entry') as $entry) {
             $folders[] = $this->_getNodeFromAtom($entry);
         }
         
@@ -106,7 +117,6 @@ class Alfresco_Rest_SpacesStore extends Alfresco_Rest_Abstract
      * GET /cmis/s/workspace:SpacesStore/i/$id/children
      * 
      * @param string $id parent folder id
-     * 
      * @return Alfresco_Node[]
      */
     public function getNode($id)

@@ -4,6 +4,13 @@
  */
 require_once dirname(__FILE__) . '/../Person.php';
 
+/**
+ * Alfresco People methods
+ * 
+ * @author Bruno Cavalcante <brunofcavalcante@gmail.com>
+ * @package Alfresco-PHP
+ * @license http://opensource.org/licenses/gpl-3.0.html GNU General Public License 3
+ */
 class Alfresco_Rest_People extends Alfresco_Rest_Abstract
 {
     private $_peopleBaseUrl = 'people';
@@ -14,6 +21,7 @@ class Alfresco_Rest_People extends Alfresco_Rest_Abstract
      * List users
      * 
      * @param $filter
+     * 
      * @return Alfresco_Person[]
      */
     public function listPeople($filter = null)

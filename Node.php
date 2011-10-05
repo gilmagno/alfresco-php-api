@@ -1,4 +1,7 @@
 <?php
+
+require_once 'Metadata.php';
+
 /**
  * Represents a Node from Alfresco
  * 
@@ -6,7 +9,8 @@
  * @package Alfresco-PHP
  * @license http://opensource.org/licenses/gpl-3.0.html GNU General Public License 3
  */
-class Alfresco_Node {
+class Alfresco_Node
+{
     /**
      * @var string
      */
@@ -41,4 +45,9 @@ class Alfresco_Node {
      * @var type
      */
     public $type;
+    
+    /**
+     * @var array
+     */
+    public $metadata = array();
 }
