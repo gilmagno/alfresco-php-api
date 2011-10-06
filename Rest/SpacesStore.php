@@ -60,15 +60,18 @@ class Alfresco_Rest_SpacesStore extends Alfresco_Rest_Abstract
         $folder->author = $this->_getAuthorFromAtomNode($atomNode);
         
         //CMIS Properties
+        $metadata = array();
         foreach ($this->_getCMISProperties($atomNode) as $property) {
             $propertyDefinitionId = $property->getAttribute('propertyDefinitionId');
             
             if ($propertyDefinitionId == self::PROPERTY_OBJECT_TYPE) {
                 $folder->type = $property->nodeValue;
             } elseif ($propertyDefinitionId && $this->_isCustomProperty($propertyDefinitionId)) {
-                $folder->metadata[] = $this->_getMetadataFromProperty($property);
+                $metadata[] = $this->_getMetadataFromProperty($property);
             }
         }
+        
+        $folder->metadata = $metadata;
         
         return $folder;
     }
