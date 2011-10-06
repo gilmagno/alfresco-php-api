@@ -4,7 +4,6 @@
  * 
  * @author Bruno Cavalcante <brunofcavalcante@gmail.com>
  * @package alfresco-php-api
- * @since 13/05/2010
  */
 class Alfresco_Rest_Exception extends Exception
 {

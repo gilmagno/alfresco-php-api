@@ -14,7 +14,6 @@ require_once 'CurlClient.php';
  * 
  * @author Gil Magno <gilmagno@gmail.com>
  * @package alfresco-php-api
- * @license http://opensource.org/licenses/gpl-3.0.html GNU General Public License 3
  */
 abstract class Alfresco_Rest_Abstract
 {

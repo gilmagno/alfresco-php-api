@@ -14,7 +14,6 @@ require_once dirname(__FILE__) . '/../Metadata.php';
  * 
  * @author Bruno Cavalcante <brunofcavalcante@gmail.com>
  * @package alfresco-php-api
- * @license http://opensource.org/licenses/gpl-3.0.html GNU General Public License 3
  */
 class Alfresco_Rest_SpacesStore extends Alfresco_Rest_Abstract
 {
