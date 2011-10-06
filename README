@@ -1,0 +1,12 @@
+This is an API for accessing Alfresco services with PHP
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of GPLv3 <http://www.gnu.org/licenses/>
+
+Licence:
+  GPLv3 <http://www.gnu.org/licenses/>
+
+Authors:
+  Bruno F. Cavalcante <brunofcavalcante@gmail.com>
+  Gil Magno <gilmagno@gmail.com>
+
