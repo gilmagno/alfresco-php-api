@@ -5,6 +5,11 @@
 require_once dirname(__FILE__) . '/../Node.php';
 
 /**
+ * @see Alfresco_Metadata
+ */
+require_once dirname(__FILE__) . '/../Metadata.php';
+
+/**
  * Alfresco SpacesStore methods
  * 
  * @author Bruno Cavalcante <brunofcavalcante@gmail.com>
