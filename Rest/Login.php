@@ -27,8 +27,8 @@ class Alfresco_Rest_Login extends Alfresco_Rest_Abstract
      * 
      * POST /alfresco/service/api/login
      * 
-     * @param $username
-     * @param $password
+     * @param string $username
+     * @param string $password
      * @return array array with the authentication ticket. Example: array('ticket' => 'ahq812GasLPlsmNMskneulasJsjak')
      */
     public function login($username, $password)
@@ -44,11 +44,12 @@ class Alfresco_Rest_Login extends Alfresco_Rest_Abstract
         return $result['data'];
     }
 
-    /*
+    /**
      * Logout
      * 
      * DELETE /alfresco/service/api/login/ticket/{ticket}
      * 
+     * @param string $ticket
      * @return array service's response
      */
     public function logout($ticket)

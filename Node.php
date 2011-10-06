@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * @see Alfresco_Metadata
+ */
 require_once 'Metadata.php';
 
 /**
