@@ -8,7 +8,7 @@ require_once 'Abstract.php';
  * Represents a Person from Alfresco
  * 
  * @author Bruno Cavalcante <brunofcavalcante@gmail.com>
- * @package Alfresco-PHP
+ * @package alfresco-php-api
  * @license http://opensource.org/licenses/gpl-3.0.html GNU General Public License 3
  */
 class Alfresco_Person extends Alfresco_Abstract

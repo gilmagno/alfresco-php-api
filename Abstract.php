@@ -1,4 +1,11 @@
 <?php
+/**
+ * Model class for alfresco's object
+ * 
+ * @author Bruno Cavalcante <brunofcavalcante@gmail.com>
+ * @package alfresco-php-api
+ * @license http://opensource.org/licenses/gpl-3.0.html GNU General Public License 3
+ */
 abstract class Alfresco_Abstract
 {
     /**

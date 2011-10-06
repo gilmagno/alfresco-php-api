@@ -3,7 +3,7 @@
  * Login/Logout service
  * 
  * @author Gil Magno <gilmagno@gmail.com>
- * @package Alfresco-PHP
+ * @package alfresco-php-api
  * @license http://opensource.org/licenses/gpl-3.0.html GNU General Public License 3
  */
 class Alfresco_Rest_Login extends Alfresco_Rest_Abstract
