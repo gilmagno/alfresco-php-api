@@ -43,9 +43,14 @@ class Alfresco_Node extends Alfresco_Abstract
     protected $_author;
     
     /**
-     * @var type
+     * @var string
      */
     protected $_type;
+    
+    /**
+     * @var string
+     */
+    protected $_parentId;
     
     /**
      * @var array
@@ -146,6 +151,22 @@ class Alfresco_Node extends Alfresco_Abstract
     public function setAuthor($value)
     {
         $this->_author = $value;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getParentId()
+    {
+        return $this->_parentId;
+    }
+    
+    /**
+     * @param string $value
+     */
+    public function setParentId($value)
+    {
+        $this->_parentId = $value;
     }
     
     /**

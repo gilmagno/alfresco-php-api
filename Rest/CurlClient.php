@@ -84,6 +84,7 @@ class Alfresco_Rest_CurlClient
         $adapterFormat = ucfirst(strtolower($adapterFormat));
         $classname = "Alfresco_Rest_CurlClient_GetAdapters_" . $adapterFormat . "GetAdapter";
         
+        require_once 'CurlClient/GetAdapters/' . $adapterFormat . 'GetAdapter.php';
         $adapterObject = new $classname();
         
         return $adapterObject;
@@ -93,6 +94,7 @@ class Alfresco_Rest_CurlClient
         $adapterFormat = ucfirst(strtolower($adapterFormat));
         $classname = "Alfresco_Rest_CurlClient_PostAdapters_" . $adapterFormat . "PostAdapter";
         
+        require_once 'CurlClient/PostAdapters/' . $adapterFormat . 'PostAdapter.php';
         $adapterObject = new $classname();
         
         return $adapterObject;
