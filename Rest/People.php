@@ -1,5 +1,10 @@
 <?php
 /**
+ * @see Alfresco_Rest_Abstract
+ */
+require_once 'Abstract.php';
+
+/**
  * @see Alfresco_Person
  */
 require_once dirname(__FILE__) . '/../Person.php';

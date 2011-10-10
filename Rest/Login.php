@@ -1,5 +1,10 @@
 <?php
 /**
+ * @see Alfresco_Rest_Abstract
+ */
+require_once 'Abstract.php';
+
+/**
  * Login/Logout service
  * 
  * @author Gil Magno <gilmagno@gmail.com>
