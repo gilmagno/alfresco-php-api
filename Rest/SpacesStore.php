@@ -23,6 +23,11 @@ require_once dirname(__FILE__) . '/../Metadata.php';
 class Alfresco_Rest_SpacesStore extends Alfresco_Rest_Abstract
 {
     /**
+     * CMIS Property name for the Name
+     */
+    const PROPERTY_NAME = 'cmis:name';
+    
+    /**
      * CMIS Property name for the Node Type
      */
     const PROPERTY_OBJECT_TYPE = 'cmis:objectTypeId';
@@ -44,12 +49,12 @@ class Alfresco_Rest_SpacesStore extends Alfresco_Rest_Abstract
         $url = "{$this->getBaseUrl()}/cmis/p/children";
         $result = $this->_doAuthenticatedGetAtomRequest($url);
         
-        $folders = array();
+        $nodes = array();
         foreach ($result->getElementsByTagName('entry') as $entry) {
-            $folders[] = $this->_getNodeFromAtom($entry);
+            $nodes[] = $this->_getNodeFromAtom($entry);
         }
         
-        return $folders;
+        return $nodes;
     }
     
     /**
@@ -60,31 +65,37 @@ class Alfresco_Rest_SpacesStore extends Alfresco_Rest_Abstract
      */
     protected function _getNodeFromAtom($atomNode)
     {
-        $folder = new Alfresco_Node();
-        $folder->id = $this->_getIdFromAtomNode($atomNode);
-        $folder->published = new DateTime($atomNode->getElementsByTagName('published')->item(0)->nodeValue);
-        $folder->updated = new DateTime($atomNode->getElementsByTagName('updated')->item(0)->nodeValue);
-        $folder->summary = $atomNode->getElementsByTagName('summary')->item(0)->nodeValue;
-        $folder->title = $atomNode->getElementsByTagName('title')->item(0)->nodeValue;
-        $folder->author = $this->_getAuthorFromAtomNode($atomNode);
+        $node = new Alfresco_Node();
+        $node->id = $this->_getIdFromAtomNode($atomNode);
+        $node->published = new DateTime($atomNode->getElementsByTagName('published')->item(0)->nodeValue);
+        $node->updated = new DateTime($atomNode->getElementsByTagName('updated')->item(0)->nodeValue);
+        $node->summary = $atomNode->getElementsByTagName('summary')->item(0)->nodeValue;
+        $node->title = $atomNode->getElementsByTagName('title')->item(0)->nodeValue;
+        $node->author = $this->_getAuthorFromAtomNode($atomNode);
         
         //CMIS Properties
         $metadata = array();
         foreach ($this->_getCMISProperties($atomNode) as $property) {
             $propertyDefinitionId = $property->getAttribute('propertyDefinitionId');
             
-            if ($propertyDefinitionId == self::PROPERTY_OBJECT_TYPE) {
-                $folder->type = $property->nodeValue;
+            if ($propertyDefinitionId == self::PROPERTY_NAME) {
+                $node->name = $property->nodeValue;
+            } elseif ($propertyDefinitionId == self::PROPERTY_OBJECT_TYPE) {
+                $node->type = $property->nodeValue;
             } elseif ($propertyDefinitionId == self::PROPERTY_PARENT_ID) {
-                $folder->parentId = $this->_getIdFromNodeRef($property->nodeValue);
+                $node->parentId = $this->_getIdFromNodeRef($property->nodeValue);
             } elseif ($propertyDefinitionId && $this->_isCustomProperty($propertyDefinitionId)) {
                 $metadata[] = $this->_getMetadataFromProperty($property);
             }
         }
         
-        $folder->metadata = $metadata;
+        $node->metadata = $metadata;
+        $node->downloadUrl = $this->_getDownloadUrlFromContentUrl(
+            $node, 
+            $atomNode->getElementsByTagName('content')->item(0)->getAttribute('src')
+        );
         
-        return $folder;
+        return $node;
     }
 
     /**
@@ -160,6 +171,11 @@ class Alfresco_Rest_SpacesStore extends Alfresco_Rest_Abstract
         return preg_replace('/.*\//', '', $nodeRef);
     }
     
+    protected function _getDownloadUrlFromContentUrl(Alfresco_Node $node, $contentUrl)
+    {
+        return "$contentUrl/$node->name?a=true";
+    }
+    
     /**
      * Return the children from a specified folder
      * 
@@ -173,12 +189,12 @@ class Alfresco_Rest_SpacesStore extends Alfresco_Rest_Abstract
         $url = "{$this->getBaseUrl()}/cmis/s/workspace:SpacesStore/i/$id/children";
         $result = $this->_doAuthenticatedGetAtomRequest($url);
         
-        $folders = array();
+        $nodes = array();
         foreach ($result->getElementsByTagName('entry') as $entry) {
-            $folders[] = $this->_getNodeFromAtom($entry);
+            $nodes[] = $this->_getNodeFromAtom($entry);
         }
         
-        return $folders;
+        return $nodes;
     }
     
     /**

@@ -35,6 +35,11 @@ class Alfresco_Node extends Alfresco_Abstract
     /**
      * @var string
      */
+    protected $_name;
+    
+    /**
+     * @var string
+     */
     protected $_title;
     
     /**
@@ -51,6 +56,11 @@ class Alfresco_Node extends Alfresco_Abstract
      * @var string
      */
     protected $_parentId;
+    
+    /**
+     * @var string
+     */
+    protected $_downloadUrl;
     
     /**
      * @var array
@@ -124,6 +134,22 @@ class Alfresco_Node extends Alfresco_Abstract
     /**
      * @return string
      */
+    public function getName()
+    {
+        return $this->_name;
+    }
+    
+    /**
+     * @param string $value
+     */
+    public function setName($value)
+    {
+        $this->_name = $value;
+    }
+    
+    /**
+     * @return string
+     */
     public function getTitle()
     {
         return $this->_title;
@@ -183,6 +209,22 @@ class Alfresco_Node extends Alfresco_Abstract
     public function setType($value)
     {
         $this->_type = $value;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getDownloadUrl()
+    {
+        return $this->_downloadUrl;
+    }
+    
+    /**
+     * @param string $value
+     */
+    public function setDownloadUrl($value)
+    {
+        $this->_downloadUrl = $value;
     }
     
     /**
