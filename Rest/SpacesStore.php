@@ -99,6 +99,21 @@ class Alfresco_Rest_SpacesStore extends Alfresco_Rest_Abstract
     }
 
     /**
+     * Extracts the ID from the atom object describing a node.
+     * 
+     * The ID field from the atom response comes in the following format: 
+     * urn:uuid:54e17769-43d2-41ea-ae0a-7b66533eca34
+     * So we just extract everything up to the last ":" character in order to get the actual ID.
+     * 
+     * @param SimpleXmlElement $atomNode
+     * @return string
+     */
+    protected function _getIdFromAtomNode($atomNode)
+    {
+        return preg_replace('/.*:/', '', (string) $atomNode->getElementsByTagName('id')->item(0)->nodeValue);
+    }
+
+    /**
      * Returns the atom node's author
      * 
      * @param DOMElement $atomNode
@@ -123,6 +138,32 @@ class Alfresco_Rest_SpacesStore extends Alfresco_Rest_Abstract
     }
     
     /**
+     * Returns the node-uuid from a nodeRef
+     * 
+     * A nodeRef is usually something like workspace://SpacesStore/{node-uuid}
+     * 
+     * @param string $nodeRef
+     * @return string
+     */
+    protected function _getIdFromNodeRef($nodeRef)
+    {
+        return preg_replace('/.*\//', '', $nodeRef);
+    }
+    
+    /**
+     * Returns true if the property is not from CMIS or Alfresco
+     * 
+     * This method is intended to return true if the property is user-defined.
+     * 
+     * @param string $property property name
+     * @return boolean
+     */
+    protected function _isCustomProperty($property)
+    {
+        return strpos($property, 'cmis:') !== 0 && strpos($property, 'cm:') !== 0 && strpos($property, 'app:') !== 0;
+    }
+    
+    /**
      * Returns an Alfresco_Metadata object from a DOMElement CMIS Property
      * 
      * @param DOMElement $property CMIS property
@@ -138,47 +179,6 @@ class Alfresco_Rest_SpacesStore extends Alfresco_Rest_Abstract
         return $metadata;
     }
 
-    /**
-     * Returns true if the property is not from CMIS or Alfresco
-     * 
-     * This method is intended to return true if the property is user-defined.
-     * 
-     * @param string $property property name
-     * @return boolean
-     */
-    protected function _isCustomProperty($property)
-    {
-        return strpos($property, 'cmis:') !== 0 && strpos($property, 'cm:') !== 0 && strpos($property, 'app:') !== 0;
-    }
-    
-    /**
-     * Extracts the ID from the atom object describing a node.
-     * 
-     * The ID field from the atom response comes in the following format: 
-     * urn:uuid:54e17769-43d2-41ea-ae0a-7b66533eca34
-     * So we just extract everything up to the last ":" character in order to get the actual ID.
-     * 
-     * @param SimpleXmlElement $atomNode
-     * @return string
-     */
-    protected function _getIdFromAtomNode($atomNode)
-    {
-        return preg_replace('/.*:/', '', (string) $atomNode->getElementsByTagName('id')->item(0)->nodeValue);
-    }
-    
-    /**
-     * Returns the node-uuid from a nodeRef
-     * 
-     * A nodeRef is usually something like workspace://SpacesStore/{node-uuid}
-     * 
-     * @param string $nodeRef
-     * @return string
-     */
-    protected function _getIdFromNodeRef($nodeRef)
-    {
-        return preg_replace('/.*\//', '', $nodeRef);
-    }
-    
     /**
      * Returns the download url from the CMIS get content url
      * 
