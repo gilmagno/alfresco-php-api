@@ -166,14 +166,29 @@ class Alfresco_Rest_SpacesStore extends Alfresco_Rest_Abstract
         return preg_replace('/.*:/', '', (string) $atomNode->getElementsByTagName('id')->item(0)->nodeValue);
     }
     
+    /**
+     * Returns the node-uuid from a nodeRef
+     * 
+     * A nodeRef is usually something like workspace://SpacesStore/{node-uuid}
+     * 
+     * @param string $nodeRef
+     * @return string
+     */
     protected function _getIdFromNodeRef($nodeRef)
     {
         return preg_replace('/.*\//', '', $nodeRef);
     }
     
+    /**
+     * Returns the download url from the CMIS get content url
+     * 
+     * @param Alfresco_Node $node the node, so we can get it's name
+     * @param string $contentUrl CMIS' content url
+     * @return string
+     */
     protected function _getDownloadUrlFromContentUrl(Alfresco_Node $node, $contentUrl)
     {
-        return "$contentUrl/$node->name?a=true";
+        return $this->addAlfTicketUrl("$contentUrl/$node->name?a=true");
     }
     
     /**
