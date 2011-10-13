@@ -8,11 +8,12 @@
 class Alfresco_Rest_Exception extends Exception
 {
     const ERROR_CODE = 'AlfrescoApi';
+    
     protected $code;
     protected $description;
     
     /**
-     * Construct the exception
+     * Class Constructor
      *
      * @param string $msg
      * @param string $trace
@@ -25,11 +26,19 @@ class Alfresco_Rest_Exception extends Exception
         $this->description = $description;
     }
     
+    /**
+     * @return boolean
+     */
     public function hasDescription()
     {
-        return $this->description;
+        return ($this->description);
     }
     
+    /**
+     * Returns the error description
+     * 
+     * @return string
+     */
     public function getDescription()
     {
         return $this->description;
